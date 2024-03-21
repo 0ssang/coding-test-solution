@@ -1,9 +1,6 @@
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.stream.*;
 class Solution {
     public int[] solution(int[] num_list) {
-        List<Integer> list = Arrays.stream(num_list).boxed().collect(Collectors.toList());
-        Collections.reverse(list);
-        return list.stream().mapToInt(i -> i).toArray();
+        return IntStream.rangeClosed(1, num_list.length).map(i -> num_list[num_list.length - i]).toArray();
     }
 }
