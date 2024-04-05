@@ -14,7 +14,8 @@ class Solution {
         return res;
 
         // 2. Arrays 의 메서드 사용하기
-        //Arrays.sort(arr);
-        //int[] res2 = {arr[arr.length-1], arr.length-1};
+        // Arrays.sort(arr);
+        // int[] res2 = {arr[arr.length-1], arr.length-1};
+        // return res2;
     }
 }
