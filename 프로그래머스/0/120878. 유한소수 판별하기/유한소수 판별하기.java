@@ -6,6 +6,14 @@ class Solution {
         int g = gcd(a, b);
         int denom = b / g;
         List<Integer> list = new ArrayList<>();
+        // a / b 가 유한소수인지 무한소수인지 판별
+        // 유한소수로 판별하려면...
+        //      기약분수로 변환한다.
+        //      -> 분모의 소인수가 2와 5만 존재한다.
+        // 기약분수로 변환하는 방법
+        //      분자와 분모의 공약수가 1뿐이여서 더이상 약분되지 않는 분수
+        //      최대공약수를 구한다.
+        //      -> 유클리드 호제법 사용
         
         while(denom != 1){
             if(denom % k == 0){
