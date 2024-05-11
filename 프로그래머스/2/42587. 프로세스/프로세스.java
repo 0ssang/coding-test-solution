@@ -1,31 +1,24 @@
 import java.util.*;
 class Solution {
     public int solution(int[] p, int l) {
-        int answer = 0;
-        List<Integer> list = new ArrayList<>();
-        for(int x : p) {
-            list.add(x);
+        int rank = 1;
+        PriorityQueue<Integer> pq = new PriorityQueue<>(Collections.reverseOrder());
+
+        for (int j : p) {
+            pq.add(j);
         }
-        while(l >= 0) {
-            System.out.println(list.get(0));
-            int max = Collections.max(list);
-            if(list.get(0) >= max) {
-                list.remove(0);
-                l--;
-                answer++;
-                if(l < 0) {
-                    break;
-                }
-            } else {
-                int tmp = list.get(0);
-                list.remove(0);
-                list.add(tmp);
-                l--;
-                if(l < 0) {
-                    l = list.size()-1;
+
+        while(!pq.isEmpty()){
+            for(int i=0; i<p.length; i++){
+                if(p[i] == pq.peek()){
+                    if(i == l){
+                        return rank;
+                    }
+                    pq.poll();
+                    rank++;
                 }
             }
         }
-        return answer;
+        return rank;
     }
 }
