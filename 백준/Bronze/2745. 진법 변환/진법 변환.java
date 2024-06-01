@@ -1,26 +1,29 @@
-import java.util.*;
+import java.io.*;
+import java.util.StringTokenizer;
+
 public class Main {
-	public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st = new StringTokenizer(br.readLine());
 
-		Scanner sc = new Scanner(System.in);
+        String N = st.nextToken();
+        int B = Integer.parseInt(st.nextToken());
+        br.close();
 
-		String s = sc.next();
-		int N = sc.nextInt();
-		int tmp = 1;
-		int ans = 0;
-		
-		for (int i = s.length()-1; i >= 0; i--) {
-			char c = s.charAt(i);
-			
-			if('A'<= c && c <= 'Z') {
-				ans += (c-'A'+10)*tmp;
-			}else {
-				ans += (c-'0')*tmp;
-			}
-			tmp *= N;
-		}
-		
-		System.out.println(ans);
-		
-	}
+        int tmp = 1;
+        int sum = 0;
+
+        for(int i = N.length()-1 ; i >= 0; i--){ // 여기서, 맨오른쪽 부터 계산!
+            char C = N.charAt(i);
+            
+            if ('A' <= C && C<= 'Z') {
+                sum += (C - 'A' + 10) * tmp;
+            } else {
+                sum += (C - '0') * tmp;
+            }
+            tmp *= B;
+        }
+
+        System.out.println(sum);
+    }
 }
