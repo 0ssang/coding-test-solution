@@ -1,15 +1,20 @@
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.io.IOException;
-public class Main{
-    public static void main(String[] args) throws IOException{
+import java.io.*;
+public class Main {
+    public static void main(String[] args) throws Exception {
+        // Scanner를 사용한 방법
+//        Scanner scanner = new Scanner(System.in);
+//        while(scanner.hasNext()){
+//            System.out.println(scanner.nextLine());
+//        }
+        // BufferedReader를 사용한 방법
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringBuilder sb = new StringBuilder();
-        String str = "";
-
-        while((str = br.readLine()) != null){
-            sb.append(str).append('\n');
+        while(true){
+            String str = br.readLine();
+            if(str == null || str.isEmpty()) break;
+            sb.append(str).append("\n");
         }
+        br.close();
         System.out.println(sb);
     }
 }
