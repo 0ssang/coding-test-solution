@@ -5,5 +5,5 @@ function solution(num_list) {
         sum += e;
         com *= e;
     }
-    return sum*sum > com ? 1 : 0;
+    return sum ** 2 > com ? 1 : 0;
 }
