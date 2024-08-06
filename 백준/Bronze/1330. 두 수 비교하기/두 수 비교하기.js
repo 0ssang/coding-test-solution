@@ -1,14 +1,13 @@
-const readline = require("readline");
-const rl = readline.createInterface({
-    input: process.stdin,
-    output: process.stdout,
-});
+// fs 모듈 사용
+const input = require('fs').readFileSync('/dev/stdin').toString().trim().split(' ').map(Number);
 
-let input = [];
-rl.on("line", (line) => {
-    input = line.split(" ");
-    if(+input[0] > +input[1]) console.log(">");
-    else if(+input[0] < +input[1]) console.log("<");
-    else console.log("==");
-    process.exit();
-});
+// 구조분해 할당
+const [A, B] = [input[0], input[1]];
+
+if(A < B){
+    console.log('<');
+} else if (A > B){
+    console.log('>')
+} else if (A == B){
+    console.log('==')
+}
