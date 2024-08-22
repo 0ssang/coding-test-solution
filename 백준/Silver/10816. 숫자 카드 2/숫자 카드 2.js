@@ -12,5 +12,5 @@ arr.forEach(val => {
     }
 });
 
-const answer = search.map(val => map.has(val) ? map.get(val) : 0);
+const answer = search.map(val => map.get(val) | 0);
 console.log(answer.join(" "));
