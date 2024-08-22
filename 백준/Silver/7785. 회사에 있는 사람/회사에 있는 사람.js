@@ -1,14 +1,10 @@
 const input = require('fs').readFileSync('/dev/stdin').toString().trim().split('\n').slice(1);
-const map = new Map();
-const result = [];
+const set = new Set();
 
 input.forEach( val => {
     let [name, status] = val.split(" ");
-    map.set(name, status);
+    if(status === "enter") set.add(name);
+    else if (status === "leave") set.delete(name);
 });
 
-map.forEach((val, key) => {
-    if(val === 'enter') result.push(key);
-});
-
-console.log(result.sort((a, b) => b > a ? 1 : -1).join("\n"));
+console.log([...set].sort((a, b) => b > a ? 1 : -1).join("\n"));
