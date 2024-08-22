@@ -2,7 +2,7 @@ const input = require('fs').readFileSync('/dev/stdin').toString().trim().split('
 const arr = input[1].split(" ").map(Number);
 const search = input[3].split(" ").map(Number);
 const map = new Map();
-const answer = [];
+
 
 arr.forEach(val => {
     if(map.has(val)){
@@ -12,12 +12,5 @@ arr.forEach(val => {
     }
 });
 
-search.forEach(val => {
-    if(map.has(val)){
-        answer.push(map.get(val));
-    }else {
-        answer.push(0);
-    }
-});
-
+const answer = search.map(val => map.has(val) ? map.get(val) : 0);
 console.log(answer.join(" "));
