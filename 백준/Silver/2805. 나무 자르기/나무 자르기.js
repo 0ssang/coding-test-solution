@@ -9,7 +9,7 @@ while(lo <= hi){
     let mid = Math.floor((lo + hi) / 2)
     let sum = 0
     for(const x of tree){
-        sum += Math.max(0, x - mid)
+        if(mid <= x) sum += x - mid
     }
 
     if(sum >= target){
