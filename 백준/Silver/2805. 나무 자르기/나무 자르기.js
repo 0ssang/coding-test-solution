@@ -5,7 +5,6 @@ let tree = input[1].split(" ").map(Number)
 
 let lo = 1
 let hi = Math.max(...tree)
-let answer = 0
 while(lo <= hi){
     let mid = Math.floor((lo + hi) / 2)
     let sum = 0
@@ -14,10 +13,9 @@ while(lo <= hi){
     }
 
     if(sum >= target){
-        answer = mid
         lo = mid + 1
     }else{
         hi = mid - 1
     }
 }
-console.log(answer)
+console.log(hi)
