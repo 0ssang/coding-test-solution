@@ -1,10 +1,10 @@
 const path = process.platform === 'linux' ? '/dev/stdin' : 'stdin.txt';
 const input = require('fs').readFileSync(path).toString().trim().split(/\r?\n/);
 let [num, target] = input[0].split(" ").map(Number)
-let tree = input[1].split(" ").map(Number).sort((a, b) => a - b)
+let tree = input[1].split(" ").map(Number)
 
 let lo = 1
-let hi = tree[num-1]
+let hi = tree.reduce((a, b) => Math.max(a, b))
 let answer = 0
 while(lo <= hi){
     let mid = Math.floor((lo + hi) / 2)
@@ -16,7 +16,7 @@ while(lo <= hi){
     if(sum >= target){
         answer = mid
         lo = mid + 1
-    }else if(sum < target){
+    }else{
         hi = mid - 1
     }
 }
