@@ -4,7 +4,7 @@ let [num, target] = input[0].split(" ").map(Number)
 let tree = input[1].split(" ").map(Number)
 
 let lo = 1
-let hi = tree.reduce((a, b) => Math.max(a, b))
+let hi = Math.max(...tree)
 let answer = 0
 while(lo <= hi){
     let mid = Math.floor((lo + hi) / 2)
