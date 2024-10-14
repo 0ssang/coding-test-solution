@@ -1,29 +1,18 @@
-const split = (arr) => {
-    let answer = [];
-    let count = 1;
-    for (let i = 0; i < arr.length; i++) {
-        console.log(arr[i] , count);
-        if (arr[i] === arr[i+1]) {
-            count++;
-        }
-        else {
-            answer.push(count);
-            count = 1;
+function solution(pg, sp){
+    const res = [];
+    pg = pg.map((val, idx) => Math.ceil( (100-val) / sp[idx] ))
+    let cnt = 1;
+    let max = pg[0];
+    for(let i=1; i<pg.length; i++){
+        if(max >= pg[i]){
+            cnt++;
+        }else{
+            max = pg[i];
+            res.push(cnt);
+            cnt = 1;
         }
     }
-
-    return answer;
-}
-
-function solution(progresses, speeds) {
-    let answer = [];
-    let arr = [];
-    progresses.map((program, i) => { arr.push(Math.ceil((100 - program) / speeds[i])) });
-
-    let count = 0;  
-    arr.map((el,i) => { (el > arr[i+1]) ? arr[i+1] = el : count = 0 });
-
-    answer = split(arr);
-
-    return answer;
+    res.push(cnt);
+    
+    return res;
 }
