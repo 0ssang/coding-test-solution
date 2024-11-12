@@ -1,14 +1,19 @@
-import java.util.Arrays;
-import java.util.Scanner;
+import java.io.*;
+import java.util.*;
 
-public class Main {
+public class Main{
     public static void main(String[] args){
         Scanner sc = new Scanner(System.in);
-        int N = sc.nextInt();
-
-        Integer[] arr = new Integer[N];
-        for(int i = 0; i < N; i++) arr[i] = sc.nextInt();
-
-        Arrays.stream(arr).sorted().forEach(System.out::println);
+        StringBuilder sb = new StringBuilder();
+        int tc = sc.nextInt();
+        int[] arr = new int[tc];
+        for(int i=0; i<tc; i++){
+            arr[i] = sc.nextInt();
+        }
+        Arrays.sort(arr);
+        for(int num : arr){
+            sb.append(num).append('\n');
+        }
+        System.out.println(sb);
     }
 }
