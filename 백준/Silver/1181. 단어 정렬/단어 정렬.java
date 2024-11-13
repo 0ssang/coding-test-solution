@@ -1,31 +1,23 @@
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
-import java.util.stream.Collectors;
+import java.io.*;
+import java.util.*;
 
-public class Main {
+public class Main{
     public static void main(String[] args) throws IOException {
-        Scanner sc = new Scanner(System.in);
-        int N = sc.nextInt();
-        sc.nextLine();
-
-        List<String> list = new ArrayList<>();
-        for(int i = 0; i < N; i++){
-            list.add(sc.nextLine());
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringBuilder sb = new StringBuilder();
+        
+        int N = Integer.parseInt(br.readLine());
+        
+        Set<String> set = new TreeSet<>(Comparator.comparingInt(String::length).thenComparing(Comparator.naturalOrder()));
+        for(int i=0; i<N; i++){
+            set.add(br.readLine());
         }
-
-        List<String> sortedList = list.stream()
-                .distinct()
-                .sorted((s1, s2) -> {
-                    if(s1.length() != s2.length()){
-                        return Integer.compare(s1.length(), s2.length());
-                    } else {
-                        return s1.compareTo(s2);
-                    }
-                })
-                .collect(Collectors.toList());
-
-        sortedList.forEach(System.out::println);
+        
+        Iterator<String> iter = set.iterator();
+        while(iter.hasNext()){
+            sb.append(iter.next()).append('\n');
+        }
+        System.out.println(sb.toString());
+        
     }
 }
