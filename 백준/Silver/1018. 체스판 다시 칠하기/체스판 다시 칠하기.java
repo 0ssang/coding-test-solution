@@ -1,52 +1,47 @@
 import java.util.*;
 import java.io.*;
+
 public class Main {
-    static boolean[][] board;
-    static int min = 64;
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        StringBuilder sb = new StringBuilder();
         StringTokenizer st = new StringTokenizer(br.readLine());
+
         int N = Integer.parseInt(st.nextToken());
         int M = Integer.parseInt(st.nextToken());
-        board = new boolean[N][M];
 
+        // 체스판 입력 받기
+        char[][] board = new char[N][M];
         for (int i = 0; i < N; i++) {
-            String str = br.readLine();
-            for(int j=0; j<M; j++){
-                if(str.charAt(j) == 'W'){
-                    board[i][j] = true;
-                }else{
-                    board[i][j] = false;
+            board[i] = br.readLine().toCharArray();
+        }
+
+        int minCount = Integer.MAX_VALUE;
+
+        // 8x8 크기로 잘라가며 최소 수정 횟수 찾기
+        for (int j = 0; j <= N - 8; j++) {
+            for (int i = 0; i <= M - 8; i++) {
+                // 두 가지 색으로 시작해보면서 최소 수정 횟수 계산
+                minCount = Math.min(minCount, search(board, j, i, 'W'));
+                minCount = Math.min(minCount, search(board, j, i, 'B'));
+            }
+        }
+
+        System.out.println(minCount);
+    }
+
+    // 시작 색상을 기준으로 8x8 체스판의 수정 횟수를 계산하는 메서드
+    public static int search(char[][] board, int y, int x, char startColor) {
+        int count = 0;
+
+        for (int j = 0; j < 8; j++) {
+            for (int i = 0; i < 8; i++) {
+                char expectedColor = ((j + i) % 2 == 0) ? startColor : (startColor == 'W' ? 'B' : 'W');
+                if (board[y + j][x + i] != expectedColor) {
+                    count++;
                 }
             }
         }
 
-        int row = N - 7;
-        int col = M - 7;
-        for(int i=0; i<row; i++){
-            for(int j=0; j<col; j++){
-                find(i, j);
-            }
-        }
-        // 결과 출력!!
-        System.out.println(min);
-    }
-    static void find(int x, int y){
-        int end_x = x + 8;
-        int end_y = y + 8;
-        int count = 0;
-        boolean TF = board[x][y];
-
-        for(int i=x; i<end_x; i++){
-            for(int j=y; j<end_y; j++){
-                if(board[i][j] != TF) count++;
-                TF = !TF;
-            }
-            TF = !TF;
-        }
-        count = Math.min(count, 64-count);
-        // 최솟값 갱신
-        min = Math.min(min, count);
+        return count;
     }
 }
