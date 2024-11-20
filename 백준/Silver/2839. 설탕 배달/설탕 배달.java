@@ -1,18 +1,19 @@
 import java.io.*;
+import java.util.*;
 public class Main {
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         int N = Integer.parseInt(br.readLine());
         int cnt = 0;
         for(int i=N/5; i>=0; i--){
-            int bags = N;
+            int sugar = N;
             cnt = i;
-            bags -= 5 * i;
-            if(bags == 0){
+            sugar -= 5 * i;
+            if(sugar == 0){
                 System.out.println(cnt);
                 break;
-            }else if(bags % 3 == 0){
-                cnt += bags/3;
+            }else if(sugar % 3 == 0){
+                cnt += sugar / 3;
                 System.out.println(cnt);
                 break;
             }
@@ -20,6 +21,5 @@ public class Main {
                 System.out.println(-1);
             }
         }
-
     }
 }
