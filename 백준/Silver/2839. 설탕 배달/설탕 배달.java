@@ -1,25 +1,29 @@
 import java.io.*;
-import java.util.*;
+
 public class Main {
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         int N = Integer.parseInt(br.readLine());
-        int cnt = 0;
-        for(int i=N/5; i>=0; i--){
-            int sugar = N;
-            cnt = i;
-            sugar -= 5 * i;
-            if(sugar == 0){
-                System.out.println(cnt);
-                break;
-            }else if(sugar % 3 == 0){
-                cnt += sugar / 3;
-                System.out.println(cnt);
-                break;
-            }
-            if(i == 0){
-                System.out.println(-1);
+        int[] dp = new int[N+1];
+        
+        if(N >= 3) dp[3] = 1;
+        if(N >= 5) dp[5] = 1;
+
+        for(int i=6; i<=N; i++){
+            if(i % 5 == 0){
+                dp[i] = dp[i - 5] + 1;
+            }else if(i % 3 == 0){
+                dp[i] = dp[i - 3] + 1;
+            } else {
+                if(dp[i - 3] != 0 && dp[i - 5] != 0){
+                    dp[i] = Math.min(dp[i-5], dp[i-3]) + 1;
+                }
             }
         }
+        if(dp[N] == 0){
+            System.out.println(-1);
+            return;
+        }
+        System.out.println(dp[N]);
     }
 }
