@@ -1,55 +1,72 @@
+import java.io.*;
 import java.util.*;
-public class Main{
-    public static int N;
-    public static int M;
-    public static int V;
-    public static boolean[][] arr;
-    public static boolean[] visit;
-    public static Queue<Integer> q;
 
-    public static void dfs(int start){
-        visit[start] = true;
-        System.out.print(start+" ");
-        for(int i=1; i<=N; i++){
-            if(arr[start][i] && !visit[i]){
-                dfs(i);
+class Main{
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st = new StringTokenizer(br.readLine());
+        int N = Integer.parseInt(st.nextToken());
+        int M = Integer.parseInt(st.nextToken());
+        int V = Integer.parseInt(st.nextToken());
+
+        List<List<Integer>> graph = new ArrayList<>();
+        for(int i=0; i<=N; i++){
+            graph.add(new ArrayList<>());
+        }
+        for(int i=0; i<M; i++){
+            st = new StringTokenizer(br.readLine());
+            int u = Integer.parseInt(st.nextToken());
+            int v = Integer.parseInt(st.nextToken());
+
+            graph.get(u).add(v);
+            graph.get(v).add(u);
+        }
+        br.close();
+
+        // 각 노드의 인접 리스트를 정렬
+        for (int i = 1; i <= N; i++) {
+            Collections.sort(graph.get(i));
+        }
+
+        boolean[] visitied = new boolean[N+1];
+        StringBuilder dfsResult = new StringBuilder();
+        dfs(graph, V, visitied, dfsResult);
+        System.out.println(dfsResult.toString().trim());
+
+        String bfsResult = bfs(graph, V, N);
+        System.out.println(bfsResult.trim());
+    }
+
+    private static void dfs(List<List<Integer>> graph, int current, boolean[] visitied, StringBuilder result){
+        visitied[current] = true;
+        result.append(current).append(" ");
+
+        for(int next : graph.get(current)){
+            if(!visitied[next]){
+                dfs(graph, next, visitied, result);
             }
         }
     }
-    public static void bfs(int start){
-        q = new LinkedList<Integer>();
-        q.add(start);
-        visit[start] = true;
-        System.out.print(start+" ");
-        while(!q.isEmpty()){
-            int temp = q.poll();
-            for(int i=1; i<=N;i++){
-                if(arr[temp][i] && !visit[i]){
-                    q.add(i);
-                    visit[i] = true;
-                    System.out.print(i+" ");
+
+    private static String bfs(List<List<Integer>> graph, int start, int nodes){
+        Queue<Integer> que = new LinkedList<>();
+        boolean[] visited = new boolean[nodes+1];
+        StringBuilder result = new StringBuilder();
+
+        que.add(start);
+        visited[start] = true;
+
+        while(!que.isEmpty()){
+            int current = que.poll();
+            result.append(current).append(" ");
+
+            for(int next : graph.get(current)){
+                if(!visited[next]){
+                    que.add(next);
+                    visited[next] = true;
                 }
             }
         }
-    }
-    public static void main(String[] args){
-        Scanner sc = new Scanner(System.in);
-
-        N = sc.nextInt();
-        M = sc.nextInt();
-        V = sc.nextInt();
-        arr = new boolean[1001][1001];
-        visit = new boolean[1001];
-
-        //인접 행렬 생성
-        for(int i=0; i<M; i++){
-            int a = sc.nextInt();
-            int b = sc.nextInt();
-            arr[a][b] = arr[b][a] = true;
-        }
-        dfs(V);
-        System.out.println();
-        Arrays.fill(visit, false);
-        bfs(V);
+        return result.toString();
     }
 }
