@@ -1,44 +1,56 @@
-const input = require('fs').readFileSync('/dev/stdin').toString().trim().split('\n');
-const [N, M, V] = input.shift().split(' ').map(Number);
-const edges = input.map(v => v.split(' ').map(Number));
-const graph = [...Array(N + 1)].map(() => []);
-edges.forEach(([from, to]) => {
-  graph[from].push(to);
-  graph[to].push(from);
-});
+const input = require('fs').readFileSync("/dev/stdin").toString().trim().split('\n');
+const [vertices, edges, start] = input[0].split(" ").map(Number);
+const graph = Array.from({ length: vertices + 1 }, () => []);
 
-const dfs = (start) => {
-  const stack = [start];
-  const visited = Array(N + 1).fill(false);
-  const order = [];
-  while (stack.length) {
-    const node = stack.pop();
-    if (!visited[node]) {
-      visited[node] = true;
-      order.push(node);
-      stack.push(...graph[node]);
+// 간선 입력
+for (let i = 1; i <= edges; i++) {
+    const [u, v] = input[i].split(" ").map(Number);
+    graph[u].push(v);
+    graph[v].push(u);
+}
+
+// 각 노드의 인접 리스트 정렬
+for (let i = 1; i <= vertices; i++) {
+    graph[i].sort((a, b) => a - b);
+}
+
+const dfsVisited = Array(vertices + 1).fill(false);
+const dfsResult = [];
+dfs(graph, start, dfsVisited, dfsResult);
+console.log(dfsResult.join(" "));
+
+const bfsResult = bfs(graph, start, vertices);
+console.log(bfsResult.join(" "));
+
+function dfs(graph, current, visited, result) {
+    visited[current] = true;
+    result.push(current);
+
+    for (const next of graph[current]) { // 수정된 문법
+        if (!visited[next]) {
+            dfs(graph, next, visited, result);
+        }
     }
-  }
-  return order.join(' ');
-};
+}
 
-const bfs = (start) => {
-  const queue = [start];
-  const visited = Array(N + 1).fill(false);
-  const order = [];
-  while (queue.length) {
-    const node = queue.shift();
-    if (!visited[node]) {
-      visited[node] = true;
-      order.push(node);
-      queue.push(...graph[node]);
+function bfs(graph, start, vertices) {
+    const result = [];
+    const que = [];
+    const visited = Array(vertices + 1).fill(false);
+
+    visited[start] = true;
+    que.push(start);
+
+    while (que.length > 0) {
+        const current = que.shift();
+        result.push(current);
+
+        for (const next of graph[current]) { // 수정된 문법
+            if (!visited[next]) {
+                que.push(next);
+                visited[next] = true;
+            }
+        }
     }
-  }
-  return order.join(' ');
-};
-
-graph.forEach(v => v.sort((a, b) => b - a));
-console.log(dfs(V));
-
-graph.forEach(v => v.sort((a, b) => a - b));
-console.log(bfs(V));
+    return result;
+}
