@@ -1,42 +1,28 @@
-const path = process.platform === "linux" ? "/dev/stdin" : "./input.txt";
-const input = require('fs').readFileSync(path).toString().trim().split("\n");
-const tc = +input[0];
-const answer = [];
-for (let i = 1; i <= tc; i++) {
-    const [N, targetIdx] = input[2 * i - 1].split(" ").map(Number);
-    const queue = input[2 * i].split(" ").map((val, idx) => {
-        if (idx === targetIdx) {
-            return [+val, true];
-        } else {
-            return [+val, false];
-        }
-    });
-    let cnt = 1;
+const input = require('fs')
+    .readFileSync(process.platform === "linux" ? "/dev/stdin" : "./input.txt")
+    .toString()
+    .trim()
+    .split('\n');
 
-    const prior = Array.from({ length: 10 }, () => 0);
-    queue.forEach((val) => prior[val[0]] += 1);
+const num = Number(input.shift());
+const answer = [];
+for (let i = 0; i < num; i++) {
+    let pos = Number(input.shift().split(' ')[1]);
+    let cnt = 1;
+    const queue = input.shift().split(' ').map(Number);
 
     while (true) {
-        let goBack = false;
-        const data = queue.shift();
-
-        for (let idx = data[0]; idx < prior.length - 1; idx++) {
-            if (prior[idx + 1] > 0) {
-                goBack = true;
-                break;
-            }
-        }
-
-        if (goBack) {
-            queue.push(data);
+        const max = Math.max(...queue);
+        const cur = queue.shift();
+        if (max === cur && pos === 0) {
+            answer.push(cnt);
+            break;
+        } else if (max > cur) {
+            queue.push(cur);
+            pos = pos - 1 < 0 ? queue.length - 1 : pos - 1;
         } else {
-            if (data[1]) {
-                answer.push(cnt);
-                break;
-            } else {
-                prior[data[0]] -= 1;
-                cnt += 1;
-            }
+            cnt++;
+            pos--;
         }
     }
 }
