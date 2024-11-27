@@ -1,15 +1,69 @@
 import java.io.*;
-import java.util.ArrayDeque;
- 
+// 커스텀 덱 생성: 고정 배열과 포인터 2개 사용
+class Deq {
+    private int[] arr;
+    private int front;
+    private int back;
+
+    public Deq(int size){
+        this.arr = new int[size * 2];
+        this.front = this.arr.length / 2 - 1;
+        this.back = this.arr.length / 2;
+    }
+
+    public void pushFront(int value){
+        arr[front] = value;
+        front -= 1;
+    }
+
+    public void pushBack(int value){
+        arr[back] = value;
+        back += 1;
+    }
+
+    public int popFront() {
+        if(this.isEmpty()) return -1;
+
+        int value = arr[front + 1];
+        front += 1;
+
+        return value;
+    }
+
+    public int popBack() {
+        if(this.isEmpty()) return -1;
+
+        int value = arr[back - 1];
+        back -= 1;
+
+        return value;
+    }
+
+    public int getSize() {
+        return back - front - 1;
+    }
+
+    public boolean isEmpty() {
+        return this.getSize() <= 0;
+    }
+
+    public int getFront() {
+        return arr[front + 1];
+    }
+
+    public int getBack(){
+        return arr[back - 1];
+    }
+}
+
 public class Main {
 	public static void main(String[] args) throws IOException {
  
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
- 
-		ArrayDeque<Integer> dq = new ArrayDeque<Integer>();
 		StringBuilder sb = new StringBuilder();
- 
+        
 		int N = Integer.parseInt(br.readLine());
+        Deq deq = new Deq(N);
  
 		for (int i = 0; i < N; i++) {
  
@@ -18,42 +72,42 @@ public class Main {
 			switch (s[0]) {
  
 				case "push_front": {
-					dq.addFirst(Integer.parseInt(s[1]));
+                    deq.pushFront(Integer.parseInt(s[1]));
 					break;
 				}
 				
 				case "push_back": {
-					dq.addLast(Integer.parseInt(s[1]));
+                    deq.pushBack(Integer.parseInt(s[1]));
 					break;
 				}
  
 				case "pop_front": {
-					if (dq.isEmpty()) {
-						sb.append(-1).append('\n');
-					} 
-					else {
-						sb.append(dq.pollFirst()).append('\n');
-					}
+                    int res = deq.popFront();
+                    if(res == -1){
+                        sb.append(-1).append('\n');
+                    } else {
+                        sb.append(res).append('\n');
+                    }
 					break;
 				}
  
 				case "pop_back": {
-					if (dq.isEmpty()) {
-						sb.append(-1).append('\n');
-					} 
-					else {
-						sb.append(dq.pollLast()).append('\n');
-					}
+					int res = deq.popBack();
+                    if(res == -1){
+                        sb.append(-1).append('\n');
+                    } else {
+                        sb.append(res).append('\n');
+                    }
 					break;
 				}
  
 				case "size": {
-					sb.append(dq.size()).append('\n');
+					sb.append(deq.getSize()).append('\n');
 					break;
 				}
  
 				case "empty": {
-					if (dq.isEmpty()) {
+					if (deq.isEmpty()) {
 						sb.append(1).append('\n');
 					} 
 					else {
@@ -63,21 +117,21 @@ public class Main {
 				}
  
 				case "front": {
-					if (dq.isEmpty()) {
+					if (deq.isEmpty()) {
 						sb.append(-1).append('\n');
 					} 
 					else {
-						sb.append(dq.peekFirst()).append('\n');
+						sb.append(deq.getFront()).append('\n');
 					}
 					break;
 				}
  
 				case "back": {
-					if (dq.isEmpty()) {
+					if (deq.isEmpty()) {
 						sb.append(-1).append('\n');
 					} 
 					else {
-						sb.append(dq.peekLast()).append('\n');
+						sb.append(deq.getBack()).append('\n');
 					}
 					break;
 				}
