@@ -1,30 +1,31 @@
-let [n, m, ...input] = require('fs').readFileSync('/dev/stdin').toString().trim().split("\n");
-n = +n;
-m = +m;
-const map = new Map();
-const infection = new Array(n+1).fill(false);
+const input = require('fs')
+    .readFileSync(process.platform === "linux" ? 0 : "./input.txt")
+    .toString()
+    .trim()
+    .split('\n');
 
-// 네트워크 생성 (Map(index, array[]))
-for(let i=0; i<input.length; i++){
-    let [key, value] = input[i].split(/\s/).map(Number);
-    map.has(key) ? map.get(key).push(value) : map.set(key, [value]);
-    map.has(value) ? map.get(value).push(key) : map.set(value, [key]);
+const N = +input[0];
+const pair = +input[1];
+const graph = Array.from( {length: N + 1}, () => [] );
+for(let i=2; i<=pair+1; i++){
+    const [x, y] = input[i].split(" ").map(Number);
+    graph[x].push(y);
+    graph[y].push(x);
 }
 
-// BFS 방식으로 순회하며 감염된 노드 수 계산
-const queue = [1];
-infection[1] = true;
-let infectedCount = 0;
-
-while(queue.length > 0){
-    let current = queue.shift();
-    map.get(current)?.forEach(node => {
-        if(!infection[node]){
-            infection[node] = true;
-            infectedCount++;
-            queue.push(node);
+const vst = Array(graph.length).fill(false);
+const que = [];
+que.push(1);
+vst[1] = true;
+let cnt = 0;
+while(que.length > 0){
+    const cur = que.shift();
+    for(const next of graph[cur]){
+        if(!vst[next]){
+            vst[next] = true;
+            que.push(next);
+            cnt++;
         }
-    });
+    }
 }
-
-console.log(infectedCount);
+console.log(cnt);
