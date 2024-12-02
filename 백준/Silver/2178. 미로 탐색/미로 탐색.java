@@ -1,50 +1,77 @@
-import java.util.*;
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.util.ArrayDeque;
+import java.util.Queue;
+import java.util.StringTokenizer;
 
-public class Main{
-    static int[] dy = {-1, 0, 1, 0};
-    static int[] dx = {0, 1, 0, -1};
+class Node {
+	int r, c, cnt;
 
-    public static void main(String[] args) throws IOException{
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        StringTokenizer st = new StringTokenizer(br.readLine());
-        int N = Integer.parseInt(st.nextToken()) - 1;
-        int M = Integer.parseInt(st.nextToken()) - 1;
-        int[][] map = new int[N+1][M+1];
+	Node(int r, int c, int cnt) {
+		this.r = r;
+		this.c = c;
+		this.cnt = cnt;
+	}
+}
 
-        for(int i=0; i<=N; i++){
-            String[] line = br.readLine().split("");
-            for(int j=0; j<=M; j++){
-                map[i][j] = Integer.parseInt(line[j]);
-            }
-        }
+public class Main {
+	static int n, m, ans;
+	static int[][] map;
+	static boolean[][] visited;
 
-        System.out.println(bfs(map, N, M));
-    }
+	// 상, 하, 좌, 우
+	static int[] dr = { -1, 1, 0, 0 };
+	static int[] dc = { 0, 0, -1, 1 };
 
-    static int bfs(int[][] map, int N, int M) {
-        Queue<int[]> que = new LinkedList<>();
-        que.offer(new int[]{0, 0, 1});
-        map[0][0] = 0;
-        while(!que.isEmpty()){
-            int[] point = que.poll();
-            int x = point[1];
-            int y = point[0];
-            int cnt = point[2];
+	public static void main(String[] args) throws Exception {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
-            for(int k=0; k<4; k++){
-                int nx = x + dx[k];
-                int ny = y + dy[k];
-                if(ny == N && nx == M){
-                    return ++cnt;
-                }
-                if(ny >= 0 && ny <= N && nx >= 0 && nx <= M && map[ny][nx] == 1){
-                    que.offer(new int[]{ny, nx, cnt+1});
-                    map[ny][nx] = 0;
-                }
-            }
-        }
+		// 입력 처리
+		StringTokenizer st = new StringTokenizer(br.readLine());
+		n = Integer.parseInt(st.nextToken());
+		m = Integer.parseInt(st.nextToken());
 
-        return -1;
-    }
+		map = new int[n][m];
+		visited = new boolean[n][m];
+
+		for (int i = 0; i < n; i++) {
+			char[] str = br.readLine().toCharArray();
+			for (int j = 0; j < m; j++) {
+				map[i][j] = str[j] - '0';
+			}
+		}
+
+		bfs();
+
+		// 결과 출력
+		System.out.println(ans);
+	}
+
+	static void bfs() {
+		Queue<Node> bfsQ = new ArrayDeque<>();
+		bfsQ.offer(new Node(0, 0, 1));
+		visited[0][0] = true;
+
+		while (!bfsQ.isEmpty()) {
+			Node curr = bfsQ.poll();
+
+			if (curr.r == n - 1 && curr.c == m - 1) {
+				ans = curr.cnt;
+				break;
+			}
+
+			for (int dir = 0; dir < 4; dir++) {
+				int nr = curr.r + dr[dir];
+				int nc = curr.c + dc[dir];
+				if (canGo(nr, nc)) {
+					bfsQ.offer(new Node(nr, nc, curr.cnt + 1));
+					visited[nr][nc] = true;
+				}
+			}
+		}
+	}
+
+	static boolean canGo(int r, int c) {
+		return (0 <= r && r < n && 0 <= c && c < m) && !visited[r][c] && map[r][c] == 1;
+	}
 }
