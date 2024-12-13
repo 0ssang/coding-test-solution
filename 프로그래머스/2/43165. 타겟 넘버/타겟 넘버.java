@@ -1,24 +1,30 @@
-class Solution {    
-    static int[] numbers;
-    static int target;
-    static int answer = 0;
+import java.util.*;
 
-    public int solution(int[] nums, int t) {
-        numbers = nums;
-        target = t;
+class Solution {    
+    public int solution(int[] numbers, int target){
+        int answer = 0;
+        int start = 0;
         
-        dfs(0, 0);
+        Deque<Integer> q = new ArrayDeque<>();
+        q.add(start);
+        
+        for(int num : numbers){
+            int len = q.size();
+            
+            for(int i=0; i<len; i++){
+                int val = q.remove();
+                q.add(val + num);
+                q.add(val - num);
+            }
+        }
+        
+        while(!q.isEmpty()){
+            int val = q.remove();
+            if(val == target){
+                answer += 1;
+            }
+        }
         
         return answer;
-    }
-    
-    public static void dfs(int sum, int depth){
-        if(depth == numbers.length){
-            if(target == sum) answer++;
-            return;
-        }
-
-        dfs(sum + numbers[depth], depth + 1);
-        dfs(sum - numbers[depth], depth + 1);
     }
 }
