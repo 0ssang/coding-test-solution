@@ -1,17 +1,21 @@
 import java.io.*;
 
 public class Solution {
+    static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+    static BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+    
     public static void main(String[] args) throws IOException{
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         int n = Integer.parseInt(br.readLine());
-        StringBuilder sb = new StringBuilder();
+        
         for(int i=0; i<n; i++){
             for(int j=0; j<=i; j++){
-                sb.append("*");
+                bw.write("*");
             }
-            sb.append("\n");
+            bw.write("\n");
         }
         
-        System.out.print(sb);
+        bw.flush();
+        bw.close();
+        br.close();
     }
 }
