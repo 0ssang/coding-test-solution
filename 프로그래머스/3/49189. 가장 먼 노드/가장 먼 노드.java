@@ -1,51 +1,48 @@
 import java.util.*;
 class Solution {
-    static Queue<Integer> q = new LinkedList<>();
-    static int arr[];
-    static ArrayList<Integer>[]list;
-    static boolean visited[];   // 양방향그래프이니 큐에서 무한 반복을 방지하기 위해
-    public static int solution(int n, int[][] edge) {
-        int ans = 0;
-        arr = new int[n+1];
-        visited = new boolean[n+1];
-        list = new ArrayList[n+1];
-        
-        for(int i=1; i<=n; i++) {
-            list[i] = new ArrayList<>();
+
+    public int solution(int n, int[][] edge) {
+        List<List<Integer>> graph = new ArrayList<>();
+        for(int i=0; i<=n; i++){
+            graph.add(new ArrayList<>());
         }
         
-        for(int i=0; i<edge.length; i++) {
-            int a = edge[i][0];
-            int b = edge[i][1];
-            list[a].add(b);
-            list[b].add(a);
-        }       // 연결관계 표현
+        for(int[] node : edge){
+            graph.get(node[0]).add(node[1]);
+            graph.get(node[1]).add(node[0]);
+        }
         
+        return bfs(n, graph);
+    }
+    
+    private int bfs(int n, List<List<Integer>> graph){
+        boolean[] visited = new boolean[n+1];
+        Queue<Integer> queue = new LinkedList<>();
+        int[] distance = new int[n+1];
         
-        q.add(1);
-        visited[1] = true;
-        while(!q.isEmpty()) {
-            int a=  q.poll();
-            for(int b : list[a]) {
-                if(visited[b]) {
-                    continue;
+        queue.offer(1);
+        distance[1] = 0;
+        visited[1] = true; 
+        
+        while(!queue.isEmpty()){
+            int now = queue.poll();
+            
+            for(int next : graph.get(now)){
+                if(!visited[next]){
+                    visited[next] = true;
+                    distance[next] = distance[now] + 1;
+                    queue.offer(next);
                 }
-                q.add(b);
-                visited[b] = true;
-                arr[b] = arr[a]+1;
             }
         }
-        
-        Arrays.sort(arr);
         int cnt = 0;
-        int max = arr[n];
-        for(int i=n; i>=1; i--) {
-            if(max == arr[i]) {
-                cnt++;
-            }
-            else {
-                break;
-            }
+        int max = 0;
+        for(int i=1; i<distance.length; i++){
+            max = Math.max(distance[i], max);
+        }
+        
+        for(int i=1; i<distance.length; i++){
+            if(max == distance[i]) cnt++;
         }
         
         return cnt;

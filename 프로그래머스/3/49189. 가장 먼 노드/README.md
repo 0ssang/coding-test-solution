@@ -1,10 +1,10 @@
 # [level 3] 가장 먼 노드 - 49189 
 
-[문제 링크](https://school.programmers.co.kr/learn/courses/30/lessons/49189?language=javascript) 
+[문제 링크](https://school.programmers.co.kr/learn/courses/30/lessons/49189?language=java) 
 
 ### 성능 요약
 
-메모리: 55.7 MB, 시간: 45.51 ms
+메모리: 99.6 MB, 시간: 114.23 ms
 
 ### 구분
 
@@ -16,7 +16,7 @@
 
 ### 제출 일자
 
-2025년 02월 03일 23:57:37
+2025년 12월 09일 15:36:06
 
 ### 문제 설명
 
