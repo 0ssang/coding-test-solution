@@ -1,21 +1,25 @@
 import java.util.*;
 
 class Solution {    
-    int count = 0;
     
     public int solution(int[] numbers, int target){
-        dfs(numbers, 0, 0, target);
-        return count;
-    }
-    
-    private void dfs(int[] numbers, int sum, int index, int target){
-        if(numbers.length == index) {
-            if(sum == target) count++;
-            return;
+        Map<Integer, Integer> dp = new HashMap<>();
+        
+        dp.put(0,1);
+        
+        for(int num : numbers){
+            Map<Integer, Integer> next = new HashMap<>();
+            
+            for(int sum : dp.keySet()){
+                int count = dp.get(sum);
+                
+                next.put(sum + num, next.getOrDefault(sum + num, 0) + count);
+                next.put(sum - num, next.getOrDefault(sum - num, 0) + count);
+            }
+            
+            dp = next;
         }
         
-        int x = numbers[index];
-        dfs(numbers, sum + x, index + 1, target);
-        dfs(numbers, sum - x, index + 1, target);
+        return dp.getOrDefault(target, 0);
     }
 }
